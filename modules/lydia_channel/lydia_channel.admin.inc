@@ -17,6 +17,13 @@ function lydia_channel_plupload_form($form, &$form_state) {
   foreach ($nodes as $node) {
     $options[$node->nid] = check_plain($node->title) . ' [nid:' . $node->nid . ']';
   }
+
+  $form['delete'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Delete all files'),
+    '#description' => t('Warning, this action cannot be undone'),
+    '#default_value' => -1,
+  );
   
   $form['channel'] = array(
     '#type' => 'select',
@@ -50,6 +57,19 @@ function lydia_channel_plupload_form_submit(&$form, &$form_state) {
   $node = node_load($form_state['values']['channel']);
   $node_wrapper = entity_metadata_wrapper('node', $node);
   $files = $node_wrapper->lydia_channel_audio->value();
+  if ($form_state['values']['delete']) {
+    $delete_count = 0;
+    foreach ($files as $file) {
+      file_delete((object) $file, TRUE);
+      $delete_count += 1;
+    }
+    drupal_set_message(format_plural($delete_count,
+      'Deleted 1 file successfully on %node.',
+      'Deleted @count files successfully on %node.',
+      array('%node' => $node->title))
+    );
+    $files = array();
+  }
   $count = 0;
   foreach ($form_state['values']['files'] as $plupload) {
     if ($plupload['status'] == 'done') {
