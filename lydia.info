@@ -21,6 +21,7 @@ dependencies[] = toolbar
 dependencies[] = features
 
 ; Lydia
+dependencies[] = lydia_base
 dependencies[] = lydia_channel
 
 files[] = lydia.profile

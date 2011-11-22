@@ -1,0 +1,78 @@
+<?php
+
+/**
+ * @file
+ * Administration forms and callbacks for lydia channel.
+ */
+
+/**
+ * Bulk upload form.
+ */
+function lydia_channel_plupload_form($form, &$form_state) {
+  $nodes = db_select('node', 'n')
+    ->fields('n', array('nid', 'title'))
+    ->condition('type', 'lydia_channel')
+    ->execute();
+  $options = array();
+  foreach ($nodes as $node) {
+    $options[$node->nid] = check_plain($node->title) . ' [nid:' . $node->nid . ']';
+  }
+  
+  $form['channel'] = array(
+    '#type' => 'select',
+    '#title' => t('Channel'),
+    '#description' => t('Select the channel you want the files uploaded to.'),
+    '#options' => $options,
+    '#required' => TRUE,
+  );
+
+  $form['files'] = array(
+    '#type' => 'plupload',
+    '#title' => t('Files'),
+    '#description' => t('Select the file you want to upload.'),
+    '#upload_validators' => array(
+      'file_validate_extensions' => array('mp3'),
+    ),
+  );
+
+  $form['upload'] = array(
+    '#type' => 'submit',
+    '#value' => t('Upload'),
+  );
+  
+  return $form;
+}
+
+/**
+ * Submit handler for lydia_channel_plupload_form().
+ */
+function lydia_channel_plupload_form_submit(&$form, &$form_state) {
+  $node = node_load($form_state['values']['channel']);
+  $node_wrapper = entity_metadata_wrapper('node', $node);
+  $files = $node_wrapper->lydia_channel_audio->value();
+  $count = 0;
+  foreach ($form_state['values']['files'] as $plupload) {
+    if ($plupload['status'] == 'done') {
+      $file = file_uri_to_object($plupload['tmppath']);
+      $file->filename = $plupload['name'];
+      $file->type = 'audio';
+      file_save($file);
+      file_move($file, 'public://lydia-channel/' . $plupload['name']);
+      // File field attributes.
+      $file->display = 1;
+      $file->description = '';
+      $files[] = (array) $file;
+      $count += 1;
+    }
+    else {
+      drupal_set_message(t("Error uploading file: @file, upload didn't complete.", array('@name' => $plupload['name'])), 'warning');
+    }
+  }
+  $node_wrapper->lydia_channel_audio = $files;
+  $node_wrapper->save();
+  drupal_set_message(format_plural($count,
+    'Uploaded 1 file successfully to %node.',
+    'Uploaded @count files successfully to %node.',
+    array('%node' => $node->title))
+  );
+}

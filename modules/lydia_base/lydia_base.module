@@ -1,0 +1,25 @@
+<?php
+/**
+ * @file
+ * Core Lydia features.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function lydia_base_menu() {
+  return array(
+    // Top level "Lydia" container.
+    'admin/lydia' => array(
+      'title' => 'Lydia',
+      'description' => 'Administration area for Lydia.',
+      'page callback' => 'system_admin_menu_block_page',
+      'access arguments' => array('access administration pages'),
+      'file path' => drupal_get_path('module', 'system'),
+      'file' => 'system.admin.inc',
+      'weight' => -20,
+    ),
+  );
+}
+
+

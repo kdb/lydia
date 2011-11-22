@@ -5,6 +5,34 @@
  */
 
 /**
+ * Implements hook_menu().
+ */
+function lydia_channel_menu() {
+  return array(
+    'admin/lydia/upload' => array(
+      'title' => 'Bulk upload',
+      'description' => 'Bulk upload files to a Lydia channel.',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('lydia_channel_plupload_form'),
+      'access arguments' => array('upload files to lydia channel'),
+      'file' => 'lydia_channel.admin.inc',
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function lydia_channel_permission() {
+  return array(
+    'upload files to lydia channel' =>  array(
+      'title' => t('Upload files to lydia channel'),
+    ),
+  );
+}
+
+/**
  * Implements hook_media_browser_params_alter().
  */
 function lydia_channel_media_browser_params_alter(&$params) {

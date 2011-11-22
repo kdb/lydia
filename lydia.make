@@ -23,6 +23,9 @@ projects[plupload][version] = 1.0-beta3
 projects[token][subdir] = contrib
 projects[token][version] = 1.0-beta7
 
+projects[transliteration][subdir] = contrib
+projects[transliteration][version] = 3.0
+
 projects[views][subdir] = contrib
 projects[views][version] = 3.0-rc1
 
