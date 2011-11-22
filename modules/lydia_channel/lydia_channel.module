@@ -4,4 +4,77 @@
  * Code for the Lydia Channel feature.
  */
 
+/**
+ * Implements hook_media_browser_params_alter().
+ */
+function lydia_channel_media_browser_params_alter(&$params) {
+  if (!empty($params['file_directory']) && $params['file_directory'] == 'lydia-channel') {
+    $params['types'] = array(
+      'audio' => 'audio',
+    );
+    // Will enable plupload, but doesn't work atm.
+    //$params['multiselect'] = TRUE;
+  }
+}
+
+/**
+ * Implements hook_file_presave().
+ */
+function lydia_channel_file_presave($file) {
+  // Set playtime on audio files.
+  if ($file->type == 'audio') {
+    $playtime = lydia_channel_get_playtime($file);
+    $file_wrapper = entity_metadata_wrapper('file', $file);
+    $file_wrapper->lydia_channel_playtime = $playtime;
+  }
+}
+
+/**
+ * Implements hook_library_alter().
+ */
+function lydia_channel_library_alter(&$libraries, $module) {
+  // Tweak plupload max file size
+  if ($module == 'plupload' && isset($libraries['plupload'])) {
+    // Set default max file size upload to 100mb
+    if (!empty($libraries['plupload']['js'][0]['data']['plupload']['_default']['max_file_size']) && $libraries['plupload']['js'][0]['data']['plupload']['_default']['max_file_size'] == '10mb') {
+      $libraries['plupload']['js'][0]['data']['plupload']['_default']['max_file_size'] = '100mb';
+    }
+  }
+}
+
+/**
+ * Utility function.
+ * Get the playtime for an audio file using getid3.
+ */
+function lydia_channel_get_playtime($file) {
+  $getid3 = lydia_channel_load_getid3();
+  if ($getid3) {
+    $info = $getid3->analyze(drupal_realpath($file->uri));
+    if (!empty($info['playtime_seconds'])) {
+      return (int) $info['playtime_seconds'];
+    }
+  }
+  return 0;
+}
+
+/**
+ * Helper function to load the getid3 library.
+ */
+function lydia_channel_load_getid3() {
+  // Use static cache to lazy load the getid3.
+  static $getid3 = FALSE;
+  if (!empty($getid3)) {
+    return $getid3;
+  }
+  $path = libraries_get_path('getid3');
+  include_once($path . '/getid3/getid3.php');
+  if (class_exists('getID3')) {
+    $getid3 = new getID3;
+    $getid3->encoding         = 'UTF-8';
+    $getid3->encoding_id3v1   = 'ISO-8859-1';
+    $getid3->option_tags_html = FALSE;
+  }
+  return $getid3;
+}
+
 include_once('lydia_channel.features.inc');
