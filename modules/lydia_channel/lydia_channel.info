@@ -5,6 +5,7 @@ dependencies[] = "features"
 dependencies[] = "file"
 dependencies[] = "file_entity"
 dependencies[] = "media"
+dependencies[] = "views"
 
 description = "Creates the channel for sound paper"
 features[field][] = "file-audio-lydia_channel_playtime"
@@ -14,3 +15,6 @@ features[node][] = "lydia_channel"
 name = "Lydia Channel"
 package = "Lydia"
 php = "5.2.4"
+
+; Views handlers
+files[] = views/lydia_channel_views_handler_field_file.inc

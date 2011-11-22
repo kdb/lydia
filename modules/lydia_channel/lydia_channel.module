@@ -109,4 +109,74 @@ function lydia_channel_load_getid3() {
   return $getid3;
 }
 
+function lydia_channel_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'lydia_channel') . '/views',
+  );
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function lydia_channel_views_data_alter(&$data) {
+  // Add file type
+  $data['file_managed']['type'] = $data['file_usage']['type'];
+  $data['file_managed']['type']['title'] = t('Type');
+  $data['file_managed']['type']['help'] = t('The type of file (bundle)');
+  // Set the playtime as a unix data field.
+  $data['file_managed']['filename']['field']['handler'] = 'lydia_channel_views_handler_field_file';
+}
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function lydia_channel_field_formatter_info() {
+  return array(
+    'lydia_channel_file' => array(
+      'label' => t('Audio file table'),
+      'field types' => array('file'),
+    ),
+    'lydia_channel_audio_duration' => array(
+      'label' => t('Audio file duration'),
+      'field types' => array('number_integer'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function lydia_channel_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+  $settings = $display['settings'];
+
+  switch ($display['type']) {
+    case 'lydia_channel_file':
+      if ($entity_type == 'node') {
+        $element[] = array(
+          '#markup' => lydia_base_embed_view('lydia_channel_file_formatter', 'default', array($entity->nid)),
+        );
+      }
+      break;
+
+    case 'lydia_channel_audio_duration':
+      foreach ($items as $delta => $item) {
+        $value = (int) $item['value'];
+        if ($value < 3600) {
+          $duration = sprintf("%s:%02s", (int) ($value - $value % 60) / 60, $value % 60);
+        }
+        else {
+          $duration = sprintf("%s:%02s:%02s", (int) ($value - $value % 3600) / 3600, ($value % 3600 - $value % 60) / 60, $value % 60);
+        }
+        $element[$delta] = array('#markup' => $duration);
+      }
+      break;
+  }
+
+  return $element;
+}
+
+
+
 include_once('lydia_channel.features.inc');
