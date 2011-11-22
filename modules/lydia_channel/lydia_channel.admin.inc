@@ -20,7 +20,7 @@ function lydia_channel_plupload_form($form, &$form_state) {
 
   $form['delete'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Delete all files'),
+    '#title' => t('Delete all files on channel'),
     '#description' => t('Warning, this action cannot be undone'),
     '#default_value' => 0,
     '#access' => user_access('bulk delete files to lydia channel'),
@@ -60,10 +60,20 @@ function lydia_channel_plupload_form_submit(&$form, &$form_state) {
   $files = $node_wrapper->lydia_channel_audio->value();
   if ($form_state['values']['delete']) {
     $delete_count = 0;
+    $fids = array(0);
     foreach ($files as $file) {
-      file_delete((object) $file, TRUE);
+      $fids[] = $file['fid'];
       $delete_count += 1;
     }
+    // Set the files to temporary and reset creation time, to avoid emidiate deletion.
+    db_update('file_managed')
+      ->fields(array('status' => 0, 'timestamp' => REQUEST_TIME))
+      ->condition('fid', $fids, 'IN')
+      ->execute();
+    // Delete info about file usage, to avoid deletion when removed from the file field.
+    db_delete('file_usage')
+      ->condition('fid', $fids, 'IN')
+      ->execute();
     drupal_set_message(format_plural($delete_count,
       'Deleted 1 file successfully on %node.',
       'Deleted @count files successfully on %node.',
