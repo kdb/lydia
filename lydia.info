@@ -18,3 +18,5 @@ dependencies[] = shortcut
 dependencies[] = toolbar
 
 ; Lydia
+
+files[] = lydia.profile
