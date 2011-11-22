@@ -1,0 +1,20 @@
+name = "Lydia Install profile"
+description = "Installation profile for Lydia, an audio newspaper destribution.
+core = "7.x"
+
+; Core
+dependencies[] = block
+dependencies[] = contextual
+dependencies[] = dblog
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = shortcut
+dependencies[] = toolbar
+
+; Lydia
