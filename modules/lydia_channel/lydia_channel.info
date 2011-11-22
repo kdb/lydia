@@ -1,0 +1,7 @@
+core = "7.x"
+dependencies[] = "features"
+description = "Creates the channel for sound paper"
+features[field][] = "node-lydia_channel-body"
+features[node][] = "lydia_channel"
+name = "Lydia Channel"
+package = "Features"

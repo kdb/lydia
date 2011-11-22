@@ -17,6 +17,10 @@ dependencies[] = path
 dependencies[] = shortcut
 dependencies[] = toolbar
 
+; Contrib
+dependencies[] = features
+
 ; Lydia
+dependencies[] = lydia_channel
 
 files[] = lydia.profile

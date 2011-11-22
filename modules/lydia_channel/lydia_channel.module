@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Lydia Channel feature.
+ */
+
+include_once('lydia_channel.features.inc');
