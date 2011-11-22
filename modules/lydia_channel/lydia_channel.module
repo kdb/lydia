@@ -29,6 +29,10 @@ function lydia_channel_permission() {
     'upload files to lydia channel' =>  array(
       'title' => t('Upload files to lydia channel'),
     ),
+    'bulk delete files to lydia channel' =>  array(
+      'title' => t('Bulk delete files to lydia channel'),
+      'restrict access' => TRUE,
+    ),
   );
 }
 

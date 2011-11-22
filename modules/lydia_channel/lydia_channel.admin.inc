@@ -22,7 +22,8 @@ function lydia_channel_plupload_form($form, &$form_state) {
     '#type' => 'checkbox',
     '#title' => t('Delete all files'),
     '#description' => t('Warning, this action cannot be undone'),
-    '#default_value' => -1,
+    '#default_value' => 0,
+    '#access' => user_access('bulk delete files to lydia channel'),
   );
   
   $form['channel'] = array(
