@@ -18,3 +18,4 @@ php = "5.2.4"
 
 ; Views handlers
 files[] = views/lydia_channel_views_handler_field_file.inc
+files[] = views/lydia_channel_views_plugin_row_file_rss.inc

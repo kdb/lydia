@@ -177,6 +177,26 @@ function lydia_channel_field_formatter_view($entity_type, $entity, $field, $inst
   return $element;
 }
 
-
+/**
+ * Implements hook_views_plugin().
+ */
+function lydia_channel_views_plugins() {
+  return array(
+    'module' => 'views', // This just tells our themes are elsewhere.
+    'row' => array(
+      'file_rss' => array(
+        'title' => t('File'),
+        'help' => t('Display the content for an audio file.'),
+        'handler' => 'lydia_channel_views_plugin_row_file_rss',
+        'path' => drupal_get_path('module', 'lydia_channel') . '/views', // not necessary for most modules
+        'theme' => 'views_view_row_rss',
+        'base' => array('file_managed'), // only works with 'lydia_channel' as base.
+        'uses options' => TRUE,
+        'type' => 'feed',
+        'help topic' => 'style-file-rss',
+      ),
+    ),
+  );
+}
 
 include_once('lydia_channel.features.inc');

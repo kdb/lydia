@@ -149,6 +149,16 @@ function lydia_channel_views_default_views() {
   $handler->display->display_options['filters']['type_1']['field'] = 'type';
   $handler->display->display_options['filters']['type_1']['value'] = 'node';
 
+  /* Display: Feed */
+  $handler = $view->new_display('feed', 'Feed', 'feed_1');
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['style_plugin'] = 'rss';
+  $handler->display->display_options['row_plugin'] = 'file_rss';
+  $handler->display->display_options['path'] = 'node/%/audio-feed';
+  $handler->display->display_options['displays'] = array(
+    'default' => 'default',
+  );
+
   $views[$view->name] = $view;
 
   return $views;
