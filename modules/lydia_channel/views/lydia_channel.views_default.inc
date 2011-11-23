@@ -45,7 +45,7 @@ function lydia_channel_views_default_views() {
   $handler->display->display_options['relationships']['file_to_node']['id'] = 'file_to_node';
   $handler->display->display_options['relationships']['file_to_node']['table'] = 'file_usage';
   $handler->display->display_options['relationships']['file_to_node']['field'] = 'file_to_node';
-  $handler->display->display_options['relationships']['file_to_node']['required'] = 0;
+  $handler->display->display_options['relationships']['file_to_node']['required'] = 1;
   /* Field: File: Name */
   $handler->display->display_options['fields']['filename']['id'] = 'filename';
   $handler->display->display_options['fields']['filename']['table'] = 'file_managed';
@@ -69,6 +69,31 @@ function lydia_channel_views_default_views() {
   $handler->display->display_options['fields']['filename']['empty_zero'] = 0;
   $handler->display->display_options['fields']['filename']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['filename']['link_to_file'] = 1;
+  /* Field: File: File ID */
+  $handler->display->display_options['fields']['fid']['id'] = 'fid';
+  $handler->display->display_options['fields']['fid']['table'] = 'file_managed';
+  $handler->display->display_options['fields']['fid']['field'] = 'fid';
+  $handler->display->display_options['fields']['fid']['label'] = '';
+  $handler->display->display_options['fields']['fid']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['fid']['alter']['text'] = 'Download';
+  $handler->display->display_options['fields']['fid']['alter']['make_link'] = 1;
+  $handler->display->display_options['fields']['fid']['alter']['path'] = 'lydia-channel/[fid]';
+  $handler->display->display_options['fields']['fid']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['fid']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['fid']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['fid']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['fid']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['fid']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['fid']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['fid']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['fid']['link_to_file'] = 0;
   /* Field: File: Playtime in seconds */
   $handler->display->display_options['fields']['lydia_channel_playtime']['id'] = 'lydia_channel_playtime';
   $handler->display->display_options['fields']['lydia_channel_playtime']['table'] = 'field_data_lydia_channel_playtime';
