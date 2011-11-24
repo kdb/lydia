@@ -76,24 +76,28 @@ class lydia_channel_views_plugin_row_file_rss extends views_plugin_row {
 
     // Load the specified file:
     $file = $this->files[$fid];
+
     if (empty($file)) {
       return;
     }
-
+    $file_wrapper = entity_metadata_wrapper('file', $file);
     $item_text = '';
 
-    $file->rss_namespaces = array('xmlns:dc' => 'http://purl.org/dc/elements/1.1/');
+    $file->rss_namespaces = array('xmlns:dc' => 'http://purl.org/dc/elements/1.1/', 'xmlns:itunes' => 'http://www.itunes.com/dtds/podcast-1.0.dtd');
     
     $file->rss_elements = array(
+      array('key' => 'enclosure', 'attributes' => array("url" => file_create_url($file->uri), 'length' => $file->filesize, 'type' => "audio/mpeg")),
+      array('key' => 'guid', 'value' => file_create_url($file->uri), 'attributes' => array('isPermaLink' => 'false')),
       array('key' => 'pubDate', 'value' => gmdate('r', $file->timestamp)),
-      array('key' => 'guid', 'value' => 'fid-' . $file->fid . ' at ' . $base_url, 'attributes' => array('isPermaLink' => 'false'))
+      array('key' => 'itunes:duration', 'value' => lydia_channel_playtime_as_time($file_wrapper->lydia_channel_playtime->value())),
     );
 
     $this->view->style_plugin->namespaces = array_merge($this->view->style_plugin->namespaces, $file->rss_namespaces);
 
     $item = new stdClass;
-    $item->title = $file->filename;
+    $item->title = substr($file->filename, 0, -4);
     $item->link = file_create_url($file->uri);
+    $item->description = '';
     $item->elements = $file->rss_elements;
     $item->fid = $file->fid;
     $item->readmore = '';

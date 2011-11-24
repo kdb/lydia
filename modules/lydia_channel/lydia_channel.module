@@ -190,18 +190,22 @@ function lydia_channel_field_formatter_view($entity_type, $entity, $field, $inst
     case 'lydia_channel_audio_duration':
       foreach ($items as $delta => $item) {
         $value = (int) $item['value'];
-        if ($value < 3600) {
-          $duration = sprintf("%s:%02s", (int) ($value - $value % 60) / 60, $value % 60);
-        }
-        else {
-          $duration = sprintf("%s:%02s:%02s", (int) ($value - $value % 3600) / 3600, ($value % 3600 - $value % 60) / 60, $value % 60);
-        }
-        $element[$delta] = array('#markup' => $duration);
+        $element[$delta] = array('#markup' => lydia_channel_playtime_as_time($value));
       }
       break;
   }
 
   return $element;
+}
+
+function lydia_channel_playtime_as_time($seconds) {
+  if ($seconds < 3600) {
+    $time = sprintf("%s:%02s", (int) ($seconds - $seconds % 60) / 60, $seconds % 60);
+  }
+  else {
+    $time = sprintf("%s:%02s:%02s", (int) ($seconds - $seconds % 3600) / 3600, ($seconds % 3600 - $seconds % 60) / 60, $seconds % 60);
+  }
+  return $time;
 }
 
 /**
@@ -221,6 +225,18 @@ function lydia_channel_views_plugins() {
         'uses options' => TRUE,
         'type' => 'feed',
         'help topic' => 'style-file-rss',
+      ),
+    ),
+    'style' => array(
+      'itunes_rss' => array(
+        'title' => t('Itunes RSS Feed'),
+        'help' => t('Generates an Itunes RSS feed from a view.'),
+        'handler' => 'lydia_channel_views_plugin_itunes_rss',
+        'theme' => 'views_view_rss',
+        'uses row plugin' => TRUE,
+        'uses options' => TRUE,
+        'type' => 'feed',
+        'help topic' => 'style-rss',
       ),
     ),
   );
