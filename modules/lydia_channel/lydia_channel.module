@@ -24,6 +24,20 @@ function lydia_channel_menu() {
       'access arguments' => array('access content'),
       'file' => 'lydia_channel.pages.inc',
     ),
+    'lydia-channel/%node/playlist' => array(
+      'title' => 'Download playlist',
+      'page callback' => 'lydia_channel_download_playlist',
+      'page arguments' => array(1),
+      'access arguments' => array('access content'),
+      'file' => 'lydia_channel.pages.inc',
+    ),
+    'lydia-channel/%node/zip' => array(
+      'title' => 'Download zip',
+      'page callback' => 'lydia_channel_download_zip',
+      'page arguments' => array(1),
+      'access arguments' => array('access content'),
+      'file' => 'lydia_channel.pages.inc',
+    ),
   );
 }
 
@@ -162,7 +176,13 @@ function lydia_channel_field_formatter_view($entity_type, $entity, $field, $inst
     case 'lydia_channel_file':
       if ($entity_type == 'node') {
         $element[] = array(
-          '#markup' => lydia_base_embed_view('lydia_channel_file_formatter', 'default', array($entity->nid)) . l(t('Download all'), 'lydia-channel/' . $entity->nid . '/all'),
+          '#markup' => lydia_base_embed_view('lydia_channel_file_formatter', 'default', array($entity->nid)),
+        );
+        $element[] = array(
+          '#markup' => l(t('Download playlist'), 'lydia-channel/' . $entity->nid . '/playlist'),
+        );
+        $element[] = array(
+          '#markup' => l(t('Download all'), 'lydia-channel/' . $entity->nid . '/zip'),
         );
       }
       break;
