@@ -56,6 +56,18 @@ function lydia_channel_download_zip($node) {
   $destination = $dir . trim(check_plain($node->title), '.') . '.zip';
   if (file_prepare_directory($dir, FILE_CREATE_DIRECTORY)) {
     $result = lydia_channel_create_zip($files, drupal_realpath($destination));
+    // A new file was created.
+    if ($result === TRUE) {
+      $file = array(
+        'filename' => trim(check_plain($node->title), '.') . '.zip',
+        'uri' => $destination,
+        'filemime' => file_get_mimetype($destination),
+        'status' => 0,
+      );
+      $file = (object) $file;
+      file_save($file);
+      file_usage_add($file, 'lydia_channel', 'node', $node->nid);
+    }
     if ($result === TRUE || $result === 'file exists') {
       return drupal_goto(file_create_url($destination));
     }

@@ -226,4 +226,26 @@ function lydia_channel_views_plugins() {
   );
 }
 
+/**
+ * Implements hook_node_presave().
+ */
+function lydia_channel_node_presave($node) {
+  // Delete zip file whenever node is saved, since the contents might be changed.
+  if ($node->nid && $node->type == 'lydia_channel') {
+    $fid = db_select('file_usage', 'f')
+      ->fields('f', array('fid'))
+      ->condition('id', $node->nid)
+      ->condition('type', 'node')
+      ->condition('module', 'lydia_channel')
+      ->execute()
+      ->fetchField();
+    if ($fid) {
+      $file = file_load($fid);
+      if ($file) {
+        file_delete($file, TRUE);
+      }
+    }
+  }
+}
+
 include_once('lydia_channel.features.inc');
