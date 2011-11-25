@@ -176,13 +176,9 @@ function lydia_channel_field_formatter_view($entity_type, $entity, $field, $inst
     case 'lydia_channel_file':
       if ($entity_type == 'node') {
         $element[] = array(
-          '#markup' => lydia_base_embed_view('lydia_channel_file_formatter', 'default', array($entity->nid)),
-        );
-        $element[] = array(
-          '#markup' => l(t('Download playlist'), 'lydia-channel/' . $entity->nid . '/playlist'),
-        );
-        $element[] = array(
-          '#markup' => l(t('Download all'), 'lydia-channel/' . $entity->nid . '/zip'),
+          array('#markup' => lydia_base_embed_view('lydia_channel_file_formatter', 'default', array($entity->nid))),
+          array('#markup' => '<div class="playlist">' . l(t('Download playlist'), 'lydia-channel/' . $entity->nid . '/playlist') . '</div>'),
+          array('#markup' => '<div class="zip">' . l(t('Download all'), 'lydia-channel/' . $entity->nid . '/zip') . '</div>'),
         );
       }
       break;
