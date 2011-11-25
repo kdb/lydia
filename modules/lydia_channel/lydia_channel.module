@@ -177,6 +177,8 @@ function lydia_channel_field_formatter_view($entity_type, $entity, $field, $inst
       if ($entity_type == 'node') {
         $element[] = array(
           array('#markup' => lydia_base_embed_view('lydia_channel_file_formatter', 'default', array($entity->nid))),
+        );
+        $element[] = array(
           array('#markup' => '<div class="playlist">' . l(t('Download playlist'), 'lydia-channel/' . $entity->nid . '/playlist') . '</div>'),
           array('#markup' => '<div class="zip">' . l(t('Download all'), 'lydia-channel/' . $entity->nid . '/zip') . '</div>'),
         );
