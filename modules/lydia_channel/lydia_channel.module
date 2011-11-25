@@ -196,6 +196,9 @@ function lydia_channel_field_formatter_view($entity_type, $entity, $field, $inst
   return $element;
 }
 
+/**
+ * Utility function to format playtime as a human readable time.
+ */
 function lydia_channel_playtime_as_time($seconds) {
   if ($seconds < 3600) {
     $time = sprintf("%s:%02s", (int) ($seconds - $seconds % 60) / 60, $seconds % 60);
@@ -259,6 +262,16 @@ function lydia_channel_node_presave($node) {
         file_delete($file, TRUE);
       }
     }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function lydia_channel_form_lydia_channel_node_form_alter(&$form, &$form_state) {
+  if (empty($form['#node']->nid)) {
+    $form['menu']['enabled']['#default_value'] = 1;
+    $form['menu']['enabled']['#attached']['js'][] = drupal_get_path('module', 'lydia_channel') . '/lydia_channel.node_form.js';
   }
 }
 
