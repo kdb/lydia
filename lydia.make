@@ -27,7 +27,7 @@ projects[transliteration][subdir] = contrib
 projects[transliteration][version] = 3.0
 
 projects[views][subdir] = contrib
-projects[views][version] = 3.0-rc1
+projects[views][version] = 3.0-rc3
 
 ; Libraries
 libraries[plupload][download][type] = get
