@@ -1,6 +1,6 @@
-name = "Lydia Install profile"
-description = "Installation profile for Lydia, an audio newspaper destribution.
-core = "7.x"
+name = Lydia
+description = An audio newspaper destribution for Drupal.
+core = 7.x
 
 ; Core
 dependencies[] = block
@@ -25,3 +25,4 @@ dependencies[] = lydia_base
 dependencies[] = lydia_channel
 
 files[] = lydia.profile
+
