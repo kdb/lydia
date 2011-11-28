@@ -95,7 +95,7 @@ class lydia_channel_views_plugin_row_file_rss extends views_plugin_row {
     $this->view->style_plugin->namespaces = array_merge($this->view->style_plugin->namespaces, $file->rss_namespaces);
 
     $item = new stdClass;
-    $item->title = substr($file->filename, 0, -4);
+    $item->title = $file_wrapper->lydia_channel_filename->value();
     $item->link = file_create_url($file->uri);
     $item->description = '';
     $item->elements = $file->rss_elements;

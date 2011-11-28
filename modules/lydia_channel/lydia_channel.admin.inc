@@ -88,7 +88,9 @@ function lydia_channel_plupload_form_submit(&$form, &$form_state) {
       $file->filename = $plupload['name'];
       $file->type = 'audio';
       file_save($file);
-      file_move($file, 'public://lydia-channel/' . $plupload['name']);
+      $file_wrapper = entity_metadata_wrapper('file', $file);
+      $file_wrapper->lydia_channel_filename = preg_replace('/.[a-zA-Z0-9]{1,3}$/', '', $plupload['name']);
+      file_move($file, 'public://lydia-channel/' . transliteration_clean_filename($plupload['name']));
       // File field attributes.
       $file->display = 1;
       $file->description = '';

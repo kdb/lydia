@@ -79,6 +79,9 @@ function lydia_channel_file_presave($file) {
     $playtime = lydia_channel_get_playtime($file);
     $file_wrapper = entity_metadata_wrapper('file', $file);
     $file_wrapper->lydia_channel_playtime = $playtime;
+    if (!$file_wrapper->lydia_channel_filename->value()) {
+      $file_wrapper->lydia_channel_filename = $file->filename;
+    }
   }
 }
 
