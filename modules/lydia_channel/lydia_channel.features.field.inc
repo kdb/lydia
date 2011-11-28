@@ -134,7 +134,7 @@ function lydia_channel_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 0,
+          'weight' => '0',
         ),
         'teaser' => array(
           'label' => 'hidden',
@@ -205,10 +205,10 @@ function lydia_channel_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'file',
+          'module' => 'lydia_channel',
           'settings' => array(),
-          'type' => 'file_default',
-          'weight' => 1,
+          'type' => 'lydia_channel_file',
+          'weight' => '1',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -253,6 +253,7 @@ function lydia_channel_field_default_fields() {
   // Included for use with string extractors like potx.
   t('Audio files');
   t('Body');
+  t('Playtime in seconds');
 
   return $fields;
 }

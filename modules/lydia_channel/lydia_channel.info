@@ -1,22 +1,21 @@
 core = "7.x"
-dependencies[] = "lydia_base"
-
 dependencies[] = "features"
 dependencies[] = "file"
 dependencies[] = "file_entity"
+dependencies[] = "libraries"
+dependencies[] = "lydia_base"
 dependencies[] = "media"
+dependencies[] = "number"
+dependencies[] = "plupload"
 dependencies[] = "views"
-
 description = "Creates the channel for sound paper"
 features[field][] = "file-audio-lydia_channel_playtime"
 features[field][] = "node-lydia_channel-body"
 features[field][] = "node-lydia_channel-lydia_channel_audio"
 features[node][] = "lydia_channel"
+files[] = "views/lydia_channel_views_handler_field_file.inc"
+files[] = "views/lydia_channel_views_plugin_row_file_rss.inc"
+files[] = "views/lydia_channel_views_plugin_itunes_rss.inc"
 name = "Lydia Channel"
 package = "Lydia"
 php = "5.2.4"
-
-; Views handlers
-files[] = views/lydia_channel_views_handler_field_file.inc
-files[] = views/lydia_channel_views_plugin_row_file_rss.inc
-files[] = views/lydia_channel_views_plugin_itunes_rss.inc
