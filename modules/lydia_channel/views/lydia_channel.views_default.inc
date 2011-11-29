@@ -75,7 +75,7 @@ function lydia_channel_views_default_views() {
   $handler->display->display_options['fields']['uri']['id'] = 'uri';
   $handler->display->display_options['fields']['uri']['table'] = 'file_managed';
   $handler->display->display_options['fields']['uri']['field'] = 'uri';
-  $handler->display->display_options['fields']['uri']['label'] = 'Filename';
+  $handler->display->display_options['fields']['uri']['label'] = '';
   $handler->display->display_options['fields']['uri']['alter']['alter_text'] = 1;
   $handler->display->display_options['fields']['uri']['alter']['text'] = '[lydia_channel_filename]';
   $handler->display->display_options['fields']['uri']['alter']['make_link'] = 0;
