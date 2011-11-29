@@ -20,6 +20,9 @@ projects[media][version] = 1.0-rc2
 projects[plupload][subdir] = contrib
 projects[plupload][version] = 1.0-beta3
 
+projects[strongarm][subdir] = contrib
+projects[strongarm][version] = 2.0-beta4
+
 projects[token][subdir] = contrib
 projects[token][version] = 1.0-beta7
 
