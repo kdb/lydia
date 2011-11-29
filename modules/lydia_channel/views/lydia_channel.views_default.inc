@@ -13,7 +13,7 @@ function lydia_channel_views_default_views() {
   $view->base_table = 'file_managed';
   $view->human_name = 'Lydia channel file formatter';
   $view->core = 7;
-  $view->api_version = '3.0-alpha1';
+  $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 
   /* Display: Master */
@@ -170,6 +170,10 @@ function lydia_channel_views_default_views() {
   $handler->display->display_options['fields']['filesize']['hide_empty'] = 0;
   $handler->display->display_options['fields']['filesize']['empty_zero'] = 0;
   $handler->display->display_options['fields']['filesize']['hide_alter_empty'] = 0;
+  /* Sort criterion: File: Filename (lydia_channel_filename) */
+  $handler->display->display_options['sorts']['lydia_channel_filename_value']['id'] = 'lydia_channel_filename_value';
+  $handler->display->display_options['sorts']['lydia_channel_filename_value']['table'] = 'field_data_lydia_channel_filename';
+  $handler->display->display_options['sorts']['lydia_channel_filename_value']['field'] = 'lydia_channel_filename_value';
   /* Contextual filter: Content: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
@@ -200,7 +204,6 @@ function lydia_channel_views_default_views() {
   $handler->display->display_options['filters']['type_1']['table'] = 'file_usage';
   $handler->display->display_options['filters']['type_1']['field'] = 'type';
   $handler->display->display_options['filters']['type_1']['value'] = 'node';
-
   /* Display: Feed */
   $handler = $view->new_display('feed', 'Feed', 'feed_1');
   $handler->display->display_options['pager']['type'] = 'some';
@@ -209,6 +212,24 @@ function lydia_channel_views_default_views() {
   $handler->display->display_options['path'] = 'node/%/audio-feed';
   $handler->display->display_options['displays'] = array(
     'default' => 'default',
+  );
+  $translatables['lydia_channel_file_formatter'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Content'),
+    t('[uri]'),
+    t('Filename'),
+    t('[lydia_channel_filename]'),
+    t('Download'),
+    t('lydia-channel/[fid]'),
+    t('Playtime'),
+    t('Size'),
+    t('All'),
   );
 
   $views[$view->name] = $view;
