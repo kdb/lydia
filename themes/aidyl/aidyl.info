@@ -7,3 +7,5 @@ core = 7.x
 settings[garland_width] = fluid
 stylesheets[all][] = css/aidyl.css
 stylesheets[all][] = css/color.css
+
+scripts[] = js/aidyl.js
