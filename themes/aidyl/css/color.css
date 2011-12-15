@@ -39,6 +39,7 @@ ol.task-list li.done {
 }
 
 thead th {
+  border-bottom: 2px solid #d3e7f4;
   color: #494949;
 }
 
@@ -51,6 +52,7 @@ tr.even,
 tr.odd,
 tbody th {
   border: solid #d3e7f4;
+  border-width: 1px 0;
 }
 
 tr.odd,
@@ -287,38 +289,6 @@ fieldset {
 }
 
 .fieldset-legend span.summary {
-  color: #898989;
-}
-
-/**
- * Vertical tabs.
- */
-div.vertical-tabs {
-  border-color: #d9eaf5;
-}
-
-div.vertical-tabs ul.vertical-tabs-list {
-  border-color: #d9eaf5;
-}
-
-div.vertical-tabs ul.vertical-tabs-list li {
-  background-color: #edf5fa;
-  border-color: #d9eaf5;
-}
-
-div.vertical-tabs ul.vertical-tabs-list li.selected small {
-  color: #898989;
-}
-
-div.vertical-tabs ul.vertical-tabs-list li.selected {
-  background: #fff repeat-x 0 0;
-}
-
-div.vertical-tabs ul.vertical-tabs-list li.selected a strong {
-  color: #494949;
-}
-
-.profile dt {
   color: #898989;
 }
 
