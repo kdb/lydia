@@ -25,9 +25,17 @@ function lydia_channel_download_playlist($node) {
   }
   $playlist = '';
   $node_wrapper = entity_metadata_wrapper('node', $node);
+  $files = array();
+  // Sort files by name.
   foreach ($node_wrapper->lydia_channel_audio->value() as $file) {
-    $playlist .= file_create_url($file['uri']) . PHP_EOL;
+	  $files[$file['filename']] = $file['uri'];
   }
+  ksort($files);
+  // Create playlist
+  foreach ($files as $uri) {
+    $playlist .= file_create_url($uri) . PHP_EOL;
+  }
+  // Serve the playlist as file download.
   if ($playlist) {
     drupal_add_http_header('Content-Type', 'audio/x-mpegurl; charset=utf-8');
     drupal_add_http_header('Content-Disposition', 'attachment; filename="' . check_plain($node->title) .'.m3u"');
