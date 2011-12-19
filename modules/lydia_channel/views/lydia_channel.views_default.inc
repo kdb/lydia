@@ -149,27 +149,6 @@ function lydia_channel_views_default_views() {
     'prefix_suffix' => 0,
   );
   $handler->display->display_options['fields']['lydia_channel_playtime']['field_api_classes'] = 0;
-  /* Field: File: Size */
-  $handler->display->display_options['fields']['filesize']['id'] = 'filesize';
-  $handler->display->display_options['fields']['filesize']['table'] = 'file_managed';
-  $handler->display->display_options['fields']['filesize']['field'] = 'filesize';
-  $handler->display->display_options['fields']['filesize']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['filesize']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['filesize']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['filesize']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['filesize']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['filesize']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['filesize']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['filesize']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['filesize']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['filesize']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['filesize']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['filesize']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['filesize']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['filesize']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['filesize']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['filesize']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['filesize']['hide_alter_empty'] = 0;
   /* Sort criterion: File: Filename (lydia_channel_filename) */
   $handler->display->display_options['sorts']['lydia_channel_filename_value']['id'] = 'lydia_channel_filename_value';
   $handler->display->display_options['sorts']['lydia_channel_filename_value']['table'] = 'field_data_lydia_channel_filename';
