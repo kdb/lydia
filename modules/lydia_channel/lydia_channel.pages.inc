@@ -28,7 +28,8 @@ function lydia_channel_download_playlist($node) {
   $files = array();
   // Sort files by name.
   foreach ($node_wrapper->lydia_channel_audio->value() as $file) {
-	  $files[$file['filename']] = $file['uri'];
+    $file_wrapper = entity_metadata_wrapper('file', (object) $file);
+    $files[$file_wrapper->lydia_channel_filename->value()] = $file['uri'];
   }
   ksort($files);
   // Create playlist
