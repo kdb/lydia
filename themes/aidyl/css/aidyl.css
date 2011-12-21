@@ -17,6 +17,7 @@
   font-weight: bold;
 }
 
-h1 {
+h1,
+.view-lydia-channel-file-formatter a {
   font-weight: bold;
 }
