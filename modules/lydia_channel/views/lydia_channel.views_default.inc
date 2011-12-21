@@ -159,6 +159,8 @@ function lydia_channel_views_default_views() {
   $handler->display->display_options['arguments']['nid']['field'] = 'nid';
   $handler->display->display_options['arguments']['nid']['relationship'] = 'file_to_node';
   $handler->display->display_options['arguments']['nid']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['nid']['title_enable'] = 1;
+  $handler->display->display_options['arguments']['nid']['title'] = '%1';
   $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['nid']['default_argument_skip_url'] = 0;
   $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
@@ -183,6 +185,7 @@ function lydia_channel_views_default_views() {
   $handler->display->display_options['filters']['type_1']['table'] = 'file_usage';
   $handler->display->display_options['filters']['type_1']['field'] = 'type';
   $handler->display->display_options['filters']['type_1']['value'] = 'node';
+
   /* Display: Feed */
   $handler = $view->new_display('feed', 'Feed', 'feed_1');
   $handler->display->display_options['pager']['type'] = 'none';
@@ -203,13 +206,13 @@ function lydia_channel_views_default_views() {
     t('Desc'),
     t('Content'),
     t('[uri]'),
-    t('Filename'),
     t('[lydia_channel_filename]'),
     t('Download'),
     t('lydia-channel/[fid]'),
     t('Playtime'),
-    t('Size'),
     t('All'),
+    t('%1'),
+    t('Feed'),
   );
 
   $views[$view->name] = $view;
