@@ -1,5 +1,6 @@
 api = 2
 core = 7.x
+projects[] = drupal
 
 ; Contrib modules.
 projects[ctools][subdir] = contrib
@@ -9,7 +10,7 @@ projects[entity][subdir] = contrib
 projects[entity][version] = 1.0-rc1
 
 projects[features][subdir] = contrib
-projects[features][version] = 1.0-beta4
+projects[features][version] = 1.0-beta6
 
 projects[libraries][subdir] = contrib
 projects[libraries][version] = 1.0
@@ -21,7 +22,7 @@ projects[plupload][subdir] = contrib
 projects[plupload][version] = 1.0-beta3
 
 projects[strongarm][subdir] = contrib
-projects[strongarm][version] = 2.0-beta4
+projects[strongarm][version] = 2.0-beta5
 
 projects[token][subdir] = contrib
 projects[token][version] = 1.0-beta7
@@ -30,7 +31,7 @@ projects[transliteration][subdir] = contrib
 projects[transliteration][version] = 3.0
 
 projects[views][subdir] = contrib
-projects[views][version] = 3.0-rc3
+projects[views][version] = 3.0
 
 ; Libraries
 libraries[plupload][download][type] = get
