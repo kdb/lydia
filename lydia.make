@@ -16,7 +16,7 @@ projects[libraries][subdir] = contrib
 projects[libraries][version] = 1.0
 
 projects[media][subdir] = contrib
-projects[media][version] = 1.0-rc2
+projects[media][version] = 1.0-rc3
 
 projects[plupload][subdir] = contrib
 projects[plupload][version] = 1.0-beta3
