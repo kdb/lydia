@@ -18,6 +18,8 @@ function lydia_channel_plupload_form($form, &$form_state) {
     $options[$node->nid] = check_plain($node->title) . ' [nid:' . $node->nid . ']';
   }
 
+  $form['#attached'] = array('css' => array(drupal_get_path('module', 'lydia_channel') . '/lydia_channel.theme.css'));
+
   $form['delete'] = array(
     '#type' => 'checkbox',
     '#title' => t('Delete all files on channel'),
