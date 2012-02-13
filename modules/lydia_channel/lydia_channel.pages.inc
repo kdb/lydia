@@ -62,7 +62,8 @@ function lydia_channel_download_zip($node) {
     );
   }
   $dir = 'public://lydia-channel-zip/';
-  $destination = $dir . trim(check_plain($node->title), '.') . '.zip';
+  // Use transliteration to make sure the filename is valid.
+  $destination = $dir . transliteration_clean_filename(trim(check_plain($node->title), '.'), 'da') . '.zip';
   if (file_prepare_directory($dir, FILE_CREATE_DIRECTORY)) {
     $result = lydia_channel_create_zip($files, drupal_realpath($destination));
     // A new file was created.
