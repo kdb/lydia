@@ -151,7 +151,7 @@ function lydia_channel_views_data_alter(&$data) {
   // Set the playtime as a unix data field.
   $data['file_managed']['filename']['field']['handler'] = 'lydia_channel_views_handler_field_file';
   // Fix Views bug.
-  $data['file_usage']['file_to_node']['extra'] = array(array('field' => 'type', 'value' => 'node', 'table' => 'file_usage'));
+  $data['file_usage']['file_to_node']['relationship']['extra'] = array(array('field' => 'type', 'value' => 'node', 'table' => 'file_usage'));
 }
 
 /**
