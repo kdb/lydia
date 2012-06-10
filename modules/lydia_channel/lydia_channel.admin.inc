@@ -104,8 +104,8 @@ function lydia_channel_plupload_form_submit(&$form, &$form_state) {
       drupal_set_message(t("Error uploading file: @file, upload didn't complete.", array('@name' => $plupload['name'])), 'warning');
     }
   }
-  $node_wrapper->lydia_channel_audio = $files;
-  $node_wrapper->save();
+  $node->lydia_channel_audio['und'] = $files;
+  node_save($node);
   drupal_set_message(format_plural($count,
     'Uploaded 1 file successfully to %node.',
     'Uploaded @count files successfully to %node.',
