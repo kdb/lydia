@@ -18,8 +18,9 @@ projects[libraries][version] = 1.0
 projects[media][subdir] = contrib
 projects[media][version] = 1.1
 
+; Importent - upgrading plupload will ruin the auto naming function of the files.
 projects[plupload][subdir] = contrib
-projects[plupload][version] = 1.0
+projects[plupload][version] = 1.0-beta3
 
 projects[strongarm][subdir] = contrib
 projects[strongarm][version] = 2.0-rc1
