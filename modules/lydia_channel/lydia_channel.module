@@ -93,7 +93,7 @@ function lydia_channel_library_alter(&$libraries, $module) {
   if ($module == 'plupload' && isset($libraries['plupload'])) {
     // Set default max file size upload to 100mb
     if (!empty($libraries['plupload']['js'][0]['data']['plupload']['_default']['max_file_size']) && $libraries['plupload']['js'][0]['data']['plupload']['_default']['max_file_size'] == '10mb') {
-      $libraries['plupload']['js'][0]['data']['plupload']['_default']['max_file_size'] = '100mb';
+      $libraries['plupload']['js'][0]['data']['plupload']['_default']['max_file_size'] = '200mb';
     }
   }
 }
