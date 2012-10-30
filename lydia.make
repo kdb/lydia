@@ -12,6 +12,9 @@ projects[entity][version] = 1.0-rc3
 projects[features][subdir] = contrib
 projects[features][version] = 1.0-rc2
 
+projects[google_analytics][subdir] = contrib
+projects[google_analytics][version] = 1.2
+
 projects[libraries][subdir] = contrib
 projects[libraries][version] = 1.0
 
