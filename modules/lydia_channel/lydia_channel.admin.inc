@@ -50,7 +50,7 @@ function lydia_channel_plupload_form($form, &$form_state) {
     '#type' => 'submit',
     '#value' => t('Upload'),
   );
-  
+
   return $form;
 }
 
@@ -93,6 +93,9 @@ function lydia_channel_plupload_form_submit(&$form, &$form_state) {
       file_save($file);
       $file_wrapper = entity_metadata_wrapper('file', $file);
       $file_wrapper->lydia_channel_filename = preg_replace('/.[a-zA-Z0-9]{1,3}$/', '', $plupload['name']);
+      // Shoot in the dark - this should happen at presave - but doesn't right now.
+      $playtime = lydia_channel_get_playtime($file);
+      $file_wrapper->lydia_channel_playtime = $playtime;
       file_move($file, 'public://lydia-channel/' . transliteration_clean_filename($plupload['name']));
       // File field attributes.
       $file->display = 1;

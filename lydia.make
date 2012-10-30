@@ -3,14 +3,17 @@ core = 7.x
 projects[] = drupal
 
 ; Contrib modules.
+projects[backup_migrate][subdir] = contrib
+projects[backup_migrate][version] = 2.4
+
 projects[ctools][subdir] = contrib
-projects[ctools][version] = 1.0
+projects[ctools][version] = 1.2
 
 projects[entity][subdir] = contrib
 projects[entity][version] = 1.0-rc3
 
 projects[features][subdir] = contrib
-projects[features][version] = 1.0-rc2
+projects[features][version] = 1.0
 
 projects[google_analytics][subdir] = contrib
 projects[google_analytics][version] = 1.2
@@ -19,23 +22,23 @@ projects[libraries][subdir] = contrib
 projects[libraries][version] = 1.0
 
 projects[media][subdir] = contrib
-projects[media][version] = 1.1
+projects[media][version] = 1.2
 
 ; Importent - upgrading plupload will ruin the auto naming function of the files.
 projects[plupload][subdir] = contrib
 projects[plupload][version] = 1.0-beta3
 
 projects[strongarm][subdir] = contrib
-projects[strongarm][version] = 2.0-rc1
+projects[strongarm][version] = 2.0
 
 projects[token][subdir] = contrib
-projects[token][version] = 1.0-beta7
+projects[token][version] = 1.4
 
 projects[transliteration][subdir] = contrib
 projects[transliteration][version] = 3.1
 
 projects[views][subdir] = contrib
-projects[views][version] = 3.3
+projects[views][version] = 3.5
 
 ; Libraries
 libraries[plupload][download][type] = get
