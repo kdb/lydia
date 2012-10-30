@@ -24,11 +24,8 @@ a:hover
 h1, h2 
 {
   font-size:156%;
+  font-weight: normal;
 }
-h2
-{ 
-  color: #666;
-}  
 div#page-wrapper
 {
   text-align:left;
@@ -93,7 +90,7 @@ th a:visited {
 
 td,
 th {
-  padding: .3em 0;
+  padding: .3em .5em;
 }
 
 tr.even,
