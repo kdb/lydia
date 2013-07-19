@@ -54,5 +54,5 @@ libraries[getid3][destination] = libraries
 ; Libraries
 libraries[phpga][download][type] = get
 libraries[phpga][download][url] = https://php-ga.googlecode.com/files/php-ga-1.1.1.zip
-libraries[phpga][directory_name] = php-ga
+libraries[phpga][directory_name] = phpga
 libraries[phpga][destination] = libraries
