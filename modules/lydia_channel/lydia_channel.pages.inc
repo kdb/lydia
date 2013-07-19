@@ -85,11 +85,13 @@ function lydia_channel_download_zip($node) {
     }
     if ($result === TRUE || $result === 'file exists') {
       // Track files as played.
+      $files_to_track = array();
       foreach ($node_wrapper->lydia_channel_audio->value() as $file_to_track) {
         if (!empty($file_to_track['uri'])) {
-          lydia_base_ga_track_file_uri($file_to_track['uri']);
+          $files_to_track[] = $file_to_track['uri'];
         }
       }
+      lydia_base_ga_track_file_uri($files_to_track);
 
       return drupal_goto(file_create_url($destination));
     }
@@ -128,10 +130,10 @@ function lydia_channel_create_zip($files = array(), $destination = '', $overwrit
     foreach($valid_files as $file) {
       $zip->addFile($file['path'], $file['name']);
     }
-    
+
     // Close the zip -- done!
     $zip->close();
-    
+
     // Check to make sure the file exists.
     return file_exists($destination);
   }

@@ -87,26 +87,35 @@ function lydia_base_track_n_redirect() {
  * tracking.
  * The actual tracking is handled by lydia_base_ga_track().
  */
-function lydia_base_ga_track_file_uri($file_uri) {
-  if (empty($file_uri)) {
+function lydia_base_ga_track_file_uri($file_uris = array()) {
+  if (!is_array($file_uris)) {
+    $file_uris = array($file_uris);
+  }
+
+  if (empty($file_uris)) {
     return;
   }
 
-  // Get the actual url to be tracked, in case the url is already stripped it
-  // wont harm to strip twice.
-  $url = lydia_base_strip_file_redirect(file_create_url($file_uri));
-  if (empty($url)) {
-    return;
-  }
+  $stripped_uris = array();
+  foreach ($file_uris as $file_uri) {
+    // Get the actual url to be tracked, in case the url is already stripped it
+    // wont harm to strip twice.
+    $url = lydia_base_strip_file_redirect(file_create_url($file_uri));
+    if (empty($url)) {
+      continue;
+    }
 
-  // Get the relative path.
-  $parsed = parse_url($url);
-  if (empty($parsed['path'])) {
-    return;
+    // Get the relative path.
+    $parsed = parse_url($url);
+    if (empty($parsed['path'])) {
+      continue;
+    }
+
+    $stripped_uris[] = $parsed['path'];
   }
 
   // We're ready to track.
-  lydia_base_ga_track($parsed['path']);
+  lydia_base_ga_track($stripped_uris);
 }
 
 /**
@@ -115,13 +124,14 @@ function lydia_base_ga_track_file_uri($file_uri) {
  * Tracking will only be performed if the google analytics module is enabled
  * and an account has been configured.
  */
-function lydia_base_ga_track($destination_url) {
+function lydia_base_ga_track($destination_urls = array()) {
   if (!lydia_base_ga_enabled()) {
     return;
   }
 
-  $pathinfo = pathinfo($destination_url);
-  $filename = $pathinfo['basename'];
+  if (!is_array($destination_urls)) {
+    $destination_urls = array($destination_urls);
+  }
 
   // Initialize the tracker.
   require_once libraries_get_path('phpga') . '/src/autoload.php';
@@ -136,15 +146,21 @@ function lydia_base_ga_track($destination_url) {
   // Assemble Session information.
   $session = new UnitedPrototype\GoogleAnalytics\Session();
 
-  // Assemble Page information.
-  $page = new UnitedPrototype\GoogleAnalytics\Page('/' . $destination_url);
-  if (!empty($filename)) {
-    $page->setTitle($filename);
+
+  // Track multiple requests in the same session.
+  foreach($destination_urls as $destination_url) {
+    $pathinfo = pathinfo($destination_url);
+    $filename = $pathinfo['basename'];
+
+    // Assemble Page information.
+    $page = new UnitedPrototype\GoogleAnalytics\Page('/' . $destination_url);
+    if (!empty($filename)) {
+      $page->setTitle($filename);
+    }
+
+    // Track page view.
+    $tracker->trackPageview($page, $session, $visitor);
   }
-
-  // Track page view.
-  $tracker->trackPageview($page, $session, $visitor);
-
 }
 
 /**
