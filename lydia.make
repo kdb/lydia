@@ -50,3 +50,9 @@ libraries[getid3][download][type] = get
 libraries[getid3][download][url] = http://sourceforge.net/projects/getid3/files/getID3%28%29%201.x/1.9.1/getid3-1.9.1-20110810.zip/download
 libraries[getid3][directory_name] = getid3
 libraries[getid3][destination] = libraries
+
+; Libraries
+libraries[phpga][download][type] = get
+libraries[phpga][download][url] = https://php-ga.googlecode.com/files/php-ga-1.1.1.zip
+libraries[phpga][directory_name] = php-ga
+libraries[phpga][destination] = libraries

@@ -9,6 +9,11 @@
  * Download a audio file (not play it in the browser).
  */
 function lydia_channel_download_audio($file) {
+  // Track file.
+  if (!empty($file->uri)) {
+    lydia_base_ga_track_file_uri($file->uri);
+  }
+
   drupal_add_http_header('Content-Type', 'application/force-download');
   drupal_add_http_header('Content-Disposition', 'attachment; filename="' . $file->filename . '"');
   ob_clean();
@@ -79,6 +84,13 @@ function lydia_channel_download_zip($node) {
       file_usage_add($file, 'lydia_channel', 'node', $node->nid);
     }
     if ($result === TRUE || $result === 'file exists') {
+      // Track files as played.
+      foreach ($node_wrapper->lydia_channel_audio->value() as $file_to_track) {
+        if (!empty($file_to_track['uri'])) {
+          lydia_base_ga_track_file_uri($file_to_track['uri']);
+        }
+      }
+
       return drupal_goto(file_create_url($destination));
     }
     $e = new Exception();
