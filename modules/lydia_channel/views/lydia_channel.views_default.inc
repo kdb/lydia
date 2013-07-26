@@ -104,7 +104,7 @@ function lydia_channel_views_default_views() {
   $handler->display->display_options['fields']['fid']['alter']['alter_text'] = 1;
   $handler->display->display_options['fields']['fid']['alter']['text'] = 'Download';
   $handler->display->display_options['fields']['fid']['alter']['make_link'] = 1;
-  $handler->display->display_options['fields']['fid']['alter']['path'] = 'lydia-channel/[fid]';
+  $handler->display->display_options['fields']['fid']['alter']['path'] = 'lydia-channel/[fid]/%1';
   $handler->display->display_options['fields']['fid']['alter']['absolute'] = 0;
   $handler->display->display_options['fields']['fid']['alter']['external'] = 0;
   $handler->display->display_options['fields']['fid']['alter']['replace_spaces'] = 0;
@@ -208,7 +208,7 @@ function lydia_channel_views_default_views() {
     t('[uri]'),
     t('[lydia_channel_filename]'),
     t('Download'),
-    t('lydia-channel/[fid]'),
+    t('lydia-channel/[fid]/%1'),
     t('Playtime'),
     t('All'),
     t('%1'),
