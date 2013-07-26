@@ -249,8 +249,14 @@ function lydia_base_ga_enabled() {
   return (module_exists('googleanalytics') && variable_get('googleanalytics_account', FALSE) !== FALSE);
 }
 
+/**
+ * Extract the Google Analytics category-name from a node.
+ *
+ * If the field field_ga_eventcategory empty title will be used instead. If both
+ * are empty a default "missing category" will be returned.
+ */
 function lydia_base_get_ga_category($nid) {
-  $category = NULL;
+  $category = 'missing category';
   if (is_numeric($nid)) {
     // Attempt to load the node.
     $node = node_load($nid);
@@ -259,6 +265,9 @@ function lydia_base_get_ga_category($nid) {
       $items = field_get_items('node', $node, 'field_ga_eventcategory');
       if (!empty($items[0]['value'])) {
         $category = $items[0]['value'];
+      }
+      elseif (!empty($node->title)) {
+        $category = $node->title;
       }
     }
   }
