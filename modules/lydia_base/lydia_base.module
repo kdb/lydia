@@ -146,7 +146,7 @@ function lydia_base_ga_track($destination_urls = array(), $event_category = NULL
   $session = new UnitedPrototype\GoogleAnalytics\Session();
 
   // Track multiple requests in the same session.
-  foreach($destination_urls as $destination_url) {
+  foreach ($destination_urls as $destination_url) {
     $pathinfo = pathinfo($destination_url);
     $filename = $pathinfo['basename'];
 
@@ -211,7 +211,6 @@ function lydia_base_split_file_redirect($file_path) {
     // Default value that can be passed into lydia_base_ga_track.
     $parts['channel_id'] = NULL;
   }
-
   return $parts;
 }
 
@@ -224,16 +223,16 @@ function lydia_base_split_file_redirect($file_path) {
 function lydia_base_file_url_alter(&$url) {
   if (lydia_base_ga_enabled()) {
     if (arg(0) == 'lydia-channel' && is_numeric(arg(1)) && arg(2) == 'audio-feed') {
-      // rss view.
+      // Rss view.
       $url = lydia_base_inject_file_redirect($url, 'rss', arg(1));
     }
-    if (arg(0) == 'node' && is_numeric(arg(1))) {
-      // node view.
-      $url = lydia_base_inject_file_redirect($url, 'stream', arg(1));
-    }
-    if (arg(0) == 'lydia-channel' && is_numeric(arg(1)) && arg(2) == 'playlist') {
+    elseif (arg(0) == 'lydia-channel' && is_numeric(arg(1)) && arg(2) == 'playlist') {
       // Playlist view.
       $url = lydia_base_inject_file_redirect($url, 'playlist', arg(1));
+    }
+    elseif (arg(0) == 'node' && is_numeric(arg(1))) {
+      // Node view.
+      $url = lydia_base_inject_file_redirect($url, 'stream', arg(1));
     }
     else {
       $url = lydia_base_inject_file_redirect($url);
@@ -243,7 +242,6 @@ function lydia_base_file_url_alter(&$url) {
 
 /**
  * Checks if Google Analytics is configured and enabled.
- * @return bool
  */
 function lydia_base_ga_enabled() {
   return (module_exists('googleanalytics') && variable_get('googleanalytics_account', FALSE) !== FALSE);
