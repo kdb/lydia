@@ -24,6 +24,13 @@ function lydia_channel_menu() {
       'access arguments' => array('access content'),
       'file' => 'lydia_channel.pages.inc',
     ),
+    'lydia-channel/%file/%nid' => array(
+      'title' => 'Download audio',
+      'page callback' => 'lydia_channel_download_audio',
+      'page arguments' => array(1,2),
+      'access arguments' => array('access content'),
+      'file' => 'lydia_channel.pages.inc',
+    ),
     'lydia-channel/%node/playlist' => array(
       'title' => 'Download playlist',
       'page callback' => 'lydia_channel_download_playlist',

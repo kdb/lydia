@@ -8,10 +8,10 @@
 /**
  * Download a audio file (not play it in the browser).
  */
-function lydia_channel_download_audio($file) {
+function lydia_channel_download_audio($file, $nid = NULL) {
   // Track file.
   if (!empty($file->uri)) {
-    lydia_base_ga_track_file_uri($file->uri);
+    lydia_base_ga_track_file_uri($file->uri, lydia_base_get_ga_category($nid), 'download');
   }
 
   drupal_add_http_header('Content-Type', 'application/force-download');
