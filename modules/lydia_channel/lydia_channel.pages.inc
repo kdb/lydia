@@ -68,7 +68,8 @@ function lydia_channel_download_zip($node) {
   }
   $dir = 'public://lydia-channel-zip/';
   // Use transliteration to make sure the filename is valid.
-  $destination = $dir . transliteration_clean_filename(trim(check_plain($node->title), '.'), 'da') . '.zip';
+  $filename = transliteration_clean_filename(trim(check_plain($node->title), '.'), 'da');
+  $destination = $dir . $filename . '.zip';
   if (file_prepare_directory($dir, FILE_CREATE_DIRECTORY)) {
     $result = lydia_channel_create_zip($files, drupal_realpath($destination));
     // A new file was created.
@@ -91,7 +92,7 @@ function lydia_channel_download_zip($node) {
           $files_to_track[] = $file_to_track['uri'];
         }
       }
-      lydia_base_ga_track_file_uri($files_to_track);
+      lydia_base_ga_track_file_uri($files_to_track, lydia_base_get_ga_category($node->nid), 'zip');
 
       return drupal_goto(file_create_url($destination));
     }
