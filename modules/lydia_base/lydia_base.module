@@ -67,8 +67,8 @@ function lydia_base_track_n_redirect() {
   // Strip /r/ from url - we know that it is there as we're called via
   // a menu hook.
   $url = $_GET['q'];
-  $destination_url = lydia_base_strip_file_redirect($url);
-
+  $parts = lydia_base_split_file_redirect($url);
+  $destination_url = $parts['url'];
   // Warn if we where unable to redirect.
   if ($destination_url == $url) {
     watchdog('lydia_base', 'Could not redirect user to %url', array("%url" => $url), WATCHDOG_ERROR);
@@ -76,7 +76,7 @@ function lydia_base_track_n_redirect() {
   }
 
   // Do the tracking and then redirect.
-  lydia_base_ga_track($destination_url);
+  lydia_base_ga_track($destination_url, $parts['event_category'], $parts['event_action']);
   drupal_goto($destination_url);
 }
 
@@ -87,7 +87,7 @@ function lydia_base_track_n_redirect() {
  * tracking.
  * The actual tracking is handled by lydia_base_ga_track().
  */
-function lydia_base_ga_track_file_uri($file_uris = array()) {
+function lydia_base_ga_track_file_uri($file_uris = array(), $event_category = NULL, $event_action = NULL) {
   if (!is_array($file_uris)) {
     $file_uris = array($file_uris);
   }
@@ -100,13 +100,13 @@ function lydia_base_ga_track_file_uri($file_uris = array()) {
   foreach ($file_uris as $file_uri) {
     // Get the actual url to be tracked, in case the url is already stripped it
     // wont harm to strip twice.
-    $url = lydia_base_strip_file_redirect(file_create_url($file_uri));
-    if (empty($url)) {
+    $parts = lydia_base_split_file_redirect(file_create_url($file_uri));
+    if (empty($parts['url'])) {
       continue;
     }
 
     // Get the relative path.
-    $parsed = parse_url($url);
+    $parsed = parse_url($parts['url']);
     if (empty($parsed['path'])) {
       continue;
     }
@@ -115,7 +115,7 @@ function lydia_base_ga_track_file_uri($file_uris = array()) {
   }
 
   // We're ready to track.
-  lydia_base_ga_track($stripped_uris);
+  lydia_base_ga_track($stripped_uris, $event_category, $event_action);
 }
 
 /**
@@ -124,11 +124,10 @@ function lydia_base_ga_track_file_uri($file_uris = array()) {
  * Tracking will only be performed if the google analytics module is enabled
  * and an account has been configured.
  */
-function lydia_base_ga_track($destination_urls = array()) {
+function lydia_base_ga_track($destination_urls = array(), $event_category = NULL, $event_action = NULL) {
   if (!lydia_base_ga_enabled()) {
     return;
   }
-
   if (!is_array($destination_urls)) {
     $destination_urls = array($destination_urls);
   }
@@ -146,7 +145,6 @@ function lydia_base_ga_track($destination_urls = array()) {
   // Assemble Session information.
   $session = new UnitedPrototype\GoogleAnalytics\Session();
 
-
   // Track multiple requests in the same session.
   foreach($destination_urls as $destination_url) {
     $pathinfo = pathinfo($destination_url);
@@ -161,6 +159,16 @@ function lydia_base_ga_track($destination_urls = array()) {
     // Track page view.
     $tracker->trackPageview($page, $session, $visitor);
   }
+
+  // Track event if we have a catagory.
+  if ($event_category !== NULL) {
+    // Allow null-action, Google requires it so fill in a default value.
+    $event_action = ($event_action === NULL) ? 'default' : $event_action;
+
+    // Track number of destinations as value - also don't specify label.
+    $event = new UnitedPrototype\GoogleAnalytics\Event($event_category, $event_action, NULL, count($destination_urls), TRUE);
+    $tracker->trackEvent($event, $session, $visitor);
+  }
 }
 
 /**
@@ -168,10 +176,14 @@ function lydia_base_ga_track($destination_urls = array()) {
  *
  * Upon accessing the file the request will be tracked and the user redirected
  * to the original path.
+ *
+ * Action name and channel-id is used to produce Google Analytic events.
+ * See lydia_base_split_file_redirect() for how the information is used.
  */
-function lydia_base_inject_file_redirect($file_path) {
+function lydia_base_inject_file_redirect($file_path, $action_name = 'default', $channel_id = NULL) {
   if (!empty($file_path) && preg_match('#(^.*?)(lydia-channel.*)$#', $file_path, $matches)) {
-    return $matches[1] . 'r/' . $matches[2];
+    $chan = ($channel_id !== NULL && $channel_id) ? $channel_id . '/' : '';
+    return $matches[1] . 'r/' . $action_name . '/' . $chan . $matches[2];
   }
   else {
     return $file_path;
@@ -179,19 +191,53 @@ function lydia_base_inject_file_redirect($file_path) {
 }
 
 /**
- * Strips the redirect marker from a file_path.
+ * Strips the redirect marker from a file_path and returns its parts.
+ *
+ * If a channel-id is found the channels google-analytics event category-value
+ * is looked up and returned as well.
  */
-function lydia_base_strip_file_redirect($file_path) {
-  if (!empty($file_path) && preg_match('#(^.*?)r/(lydia-channel.*)$#', $file_path, $matches)) {
-    return $matches[1] . $matches[2];
-  } else {
-    return $file_path;
+function lydia_base_split_file_redirect($file_path) {
+  if (!empty($file_path) && preg_match('#(?P<prefix>^.*?)r/(:?(?P<event_action>.*?)/)?(:?(?P<channel_id>\d*?)/)?(?P<postfix>lydia-channel.*)$#', $file_path, $parts)) {
+    $parts['url'] = $parts['prefix'] . $parts['postfix'];
   }
+  else {
+    // No match, just pass the url through.
+    $parts['url'] = $file_path;
+  }
+
+  // Load the node and get associated ga category.
+  $parts['event_category'] = lydia_base_get_ga_category($parts['channel_id']);
+  if ($parts['event_category'] === NULL) {
+    // Default value that can be passed into lydia_base_ga_track.
+    $parts['channel_id'] = NULL;
+  }
+
+  return $parts;
 }
 
-function lydia_base_file_url_alter(&$url){
+/**
+ * Implements hook_file_url_alter().
+ *
+ * Detect where the link is being rendered and inject the correct referer
+ * action.
+ */
+function lydia_base_file_url_alter(&$url) {
   if (lydia_base_ga_enabled()) {
-    $url = lydia_base_inject_file_redirect($url);
+    if (arg(0) == 'lydia-channel' && is_numeric(arg(1)) && arg(2) == 'audio-feed') {
+      // rss view.
+      $url = lydia_base_inject_file_redirect($url, 'rss', arg(1));
+    }
+    if (arg(0) == 'node' && is_numeric(arg(1))) {
+      // node view.
+      $url = lydia_base_inject_file_redirect($url, 'stream', arg(1));
+    }
+    if (arg(0) == 'lydia-channel' && is_numeric(arg(1)) && arg(2) == 'playlist') {
+      // Playlist view.
+      $url = lydia_base_inject_file_redirect($url, 'playlist', arg(1));
+    }
+    else {
+      $url = lydia_base_inject_file_redirect($url);
+    }
   }
 }
 
@@ -203,3 +249,18 @@ function lydia_base_ga_enabled() {
   return (module_exists('googleanalytics') && variable_get('googleanalytics_account', FALSE) !== FALSE);
 }
 
+function lydia_base_get_ga_category($nid) {
+  $category = NULL;
+  if (is_numeric($nid)) {
+    // Attempt to load the node.
+    $node = node_load($nid);
+    if (is_object($node)) {
+
+      $items = field_get_items('node', $node, 'field_ga_eventcategory');
+      if (!empty($items[0]['value'])) {
+        $category = $items[0]['value'];
+      }
+    }
+  }
+  return $category;
+}
