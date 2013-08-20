@@ -165,12 +165,10 @@ function lydia_base_ga_track($destination_urls = array(), $event_category = NULL
       $event_action = ($event_action === NULL) ? 'default' : $event_action;
 
       // Track number of destinations as value - also don't specify label.
-      $event = new UnitedPrototype\GoogleAnalytics\Event($event_category, $event_action, $filename, 1, TRUE);
+      $event = new UnitedPrototype\GoogleAnalytics\Event($event_category, $event_action, $event_category . '/' . $filename, 1, TRUE);
       $tracker->trackEvent($event, $session, $visitor);
     }
   }
-
-
 }
 
 /**
@@ -223,7 +221,23 @@ function lydia_base_split_file_redirect($file_path) {
  * action.
  */
 function lydia_base_file_url_alter(&$url) {
+
   if (lydia_base_ga_enabled()) {
+    // See if the URL looks like something we need to care about.
+    $extensions = explode(' ', variable_get('lydia_redirect_extensions', 'mp3'));
+    $match = FALSE;
+    foreach ($extensions as $ex) {
+      if (strpos($url, $ex) !== FALSE) {
+        $match = TRUE;
+      }
+    }
+
+    // Stop if we could not find the file-extension.
+    if (!$match) {
+      return;
+    }
+
+    // Otherwise, figure out what kind of url we have and inject accordingly.
     if ((arg(0) == 'lydia-channel' || arg(0) == 'node') && is_numeric(arg(1)) && arg(2) == 'audio-feed') {
       // Rss view.
       $url = lydia_base_inject_file_redirect($url, 'rss', arg(1));
