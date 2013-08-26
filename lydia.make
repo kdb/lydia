@@ -47,7 +47,7 @@ libraries[plupload][directory_name] = plupload
 libraries[plupload][destination] = libraries
 
 libraries[getid3][download][type] = get
-libraries[getid3][download][url] = http://sourceforge.net/projects/getid3/files/getID3%28%29%201.x/1.9.1/getid3-1.9.1-20110810.zip/download
+libraries[getid3][download][url] = http://downloads.sourceforge.net/project/getid3/getID3%28%29%201.x/1.9.1/getid3-1.9.1-20110810.zip?r=&ts=1377527228&use_mirror=kent
 libraries[getid3][directory_name] = getid3
 libraries[getid3][destination] = libraries
 
